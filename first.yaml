@@ -1,0 +1,11 @@
+- task: AzureCLI@2
+  displayName: Azure CLI
+  inputs:
+    azureSubscription: <Name of the Azure Resource Manager service connection>
+    scriptType: ps
+    scriptLocation: inlineScript
+    inlineScript: |
+      az --version
+      az account show
+      az vm create -n qmstestvm -g geosynk-test --image Win2019Datacenter --public-ip-address-dns-name geosynk-test --admin-username sjef --admin-password qMSttyhacSpvU7 --size Standard_D4_v3 -o table
+      az postgres flexible-server create --location westeurope -g geosynk-test -n geosynk-test --admin-user postgres --admin-password JrgGTduKT-oq --sku-name Standard_D2s_v3 --tier GeneralPurpose --public-access 0.0.0.0 --storage-size 128 --version 11
