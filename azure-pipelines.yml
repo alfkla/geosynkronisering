@@ -14,9 +14,9 @@ steps:
 - task: AzureCLI@2
   displayName: Azure CLI
   inputs:
-    azureSubscription: nk-test-connection
-    scriptType: ps
-    scriptLocation: inlineScript
+    azureSubscription: 'nk-test-connection'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
     inlineScript: |
       az --version
       az account show
