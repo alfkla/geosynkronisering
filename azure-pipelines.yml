@@ -6,6 +6,14 @@
 trigger:
 - main
 
+parameters:
+  - name: ServiceConnection_name
+    type: string 
+    default: dvh-geosynk-nk-test
+  
+variables:
+  ServiceConnection: ${{parameters.ServiceConnection_name}}
+
 pool:
   vmImage: ubuntu-latest
 
@@ -14,13 +22,13 @@ steps:
 - task: AzureCLI@2
   displayName: Azure CLI
   inputs:
-    azureSubscription: 'nk-test-connection'
+    azureSubscription: $(ServiceConnection)
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
       az account set -s nk-test -o table
-      az group create -n geosynk-test -o table
+      az group create -n $(ServiceConnection) -o table
       az account show
-      az vm create -n qmstestvm -g geosynk-test --image Win2019Datacenter --public-ip-address-dns-name geosynk-test --admin-username sjef --admin-password qMSttyhacSpvU7 --size Standard_D4_v3 -o table
-      az postgres flexible-server create --location westeurope -g geosynk-test -n geosynk-test --admin-user postgres --admin-password JrgGTduKT-oq --sku-name Standard_D2s_v3 --tier GeneralPurpose --public-access 0.0.0.0 --storage-size 128 --version 11
+      az vm create -n qmstestvm -g $(ServiceConnection) --image Win2019Datacenter --public-ip-address-dns-name geosynk-test --admin-username sjef --admin-password qMSttyhacSpvU7 --size Standard_D4_v3 -o table
+      az postgres flexible-server create --location westeurope -g $(ServiceConnection) -n geosynk-test --admin-user postgres --admin-password JrgGTduKT-oq --sku-name Standard_D2s_v3 --tier GeneralPurpose --public-access 0.0.0.0 --storage-size 128 --version 11
 #      az vm run-command invoke  --command-id RunPowerShellScript --name qmstestvm -g geosynk-test --scripts @script.ps1 @runOnWin.ps1
