@@ -26,8 +26,6 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       az account set -s nk-prod2 -o table
-      az group create -n $(ServiceConnection) -l westeurope -o table
-      az account show
       az vm create -n qmsdvhvm -g $(ServiceConnection) --image Win2019Datacenter --public-ip-address-dns-name geosynk-test --admin-username sjef --admin-password qMSttyhacSpvU7 --size Standard_D4_v3 --location westeurope -o table
       az postgres flexible-server create --location westeurope -g $(ServiceConnection) -n geosynk-dvh-prod --admin-user postgres --admin-password JrgGTduKT-oq --sku-name Standard_D2s_v3 --tier GeneralPurpose --public-access 0.0.0.0 --storage-size 128 --version 11
       az vm run-command invoke  --command-id RunPowerShellScript --name qmsdvhvm -g $(ServiceConnection) --scripts "c:\ProgramData\chocolatey\bin\choco install -y vcredist2017"
