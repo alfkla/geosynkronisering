@@ -8,7 +8,7 @@ trigger: none
 parameters:
   - name: ServiceConnection_name
     type: string 
-    default: dvh-geosynk-nk-test
+    default: dvh-geosynk-nk-prod2
   
 variables:
   ServiceConnection: ${{parameters.ServiceConnection_name}}
@@ -30,6 +30,6 @@ steps:
       az account show
       az vm create -n qmstestvm -g $(ServiceConnection) --image Win2019Datacenter --public-ip-address-dns-name geosynk-test --admin-username sjef --admin-password qMSttyhacSpvU7 --size Standard_D4_v3 -o table
       az postgres flexible-server create --location westeurope -g $(ServiceConnection) -n geosynk-test --admin-user postgres --admin-password JrgGTduKT-oq --sku-name Standard_D2s_v3 --tier GeneralPurpose --public-access 0.0.0.0 --storage-size 128 --version 11
-      az vm run-command invoke  --command-id RunPowerShellScript --name qmstestvm -g dvh-geosynk-nk-test --scripts "c:\ProgramData\chocolatey\bin\choco install -y vcredist2017"
-      az vm run-command invoke  --command-id RunPowerShellScript --name qmstestvm -g dvh-geosynk-nk-test --scripts "c:\ProgramData\chocolatey\bin\choco install -y psqlodbc"
-      az vm run-command invoke  --command-id RunPowerShellScript --name qmstestvm -g dvh-geosynk-nk-test --scripts @odbcdriver.ps1
+      az vm run-command invoke  --command-id RunPowerShellScript --name qmstestvm -g $(ServiceConnection) --scripts "c:\ProgramData\chocolatey\bin\choco install -y vcredist2017"
+      az vm run-command invoke  --command-id RunPowerShellScript --name qmstestvm -g $(ServiceConnection) --scripts "c:\ProgramData\chocolatey\bin\choco install -y psqlodbc"
+      az vm run-command invoke  --command-id RunPowerShellScript --name qmstestvm -g $(ServiceConnection) --scripts @odbcdriver.ps1
